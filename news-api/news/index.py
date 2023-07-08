@@ -1,11 +1,18 @@
 import json
+import os
 from flask import Flask, jsonify, request, _request_ctx_stack
 from flask_cors import cross_origin
 from jose import jwt
 from six.moves.urllib.request import urlopen
 from functools import wraps
+from dotenv import load_dotenv
 
 from news.model.news import News, NewsSchema
+
+load_dotenv()
+
+domain = os.getenv("AUTH0_DOMAIN")
+print(f"test env: {domain}")
 
 mock_news = [
     {'title': 'Titulo teste', 'content': 'conteudo teste'},
@@ -16,8 +23,8 @@ mock_news = [
 #     News('2 Titutlo teste', '2 conteudo teste')
 # ]
 
-auth0_domain = ''
-api_audience = ''
+auth0_domain = os.getenv("AUTH0_DOMAIN")
+api_audience = os.getenv("AUTH0_AUDIENCE")
 algorithms = ["RS256"]
 
 app = Flask(__name__)
