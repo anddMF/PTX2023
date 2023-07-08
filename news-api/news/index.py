@@ -16,8 +16,8 @@ mock_news = [
 #     News('2 Titutlo teste', '2 conteudo teste')
 # ]
 
-auth0_domain = 'dev-52illq35z8lkd772.us.auth0.com'
-api_audience = 'http://ptx-news/api'
+auth0_domain = ''
+api_audience = ''
 algorithms = ["RS256"]
 
 app = Flask(__name__)
