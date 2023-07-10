@@ -14,17 +14,12 @@ from news.model.auth_error import AuthError
 
 load_dotenv()
 
-domain = os.getenv("AUTH0_DOMAIN")
-print(f"test env: {domain}")
-
 mock_news = [
     {'title': 'Titulo teste', 'content': 'conteudo teste'},
     {'title': '2 Titutlo teste', 'content': '2 conteudo teste'}
 ]
 
 app = Flask(__name__)
-
-# Error handler
 
 
 @app.errorhandler(AuthError)
@@ -57,7 +52,6 @@ def get_news():
 @cross_origin(headers=["Content-Type", "Authorization"])
 @requires_auth
 def add_news():
-    # mock_news.append(request.get_json())
     objPost = NewsSchema().load(request.get_json())
     mock_news.append(objPost)
     return '', 204
