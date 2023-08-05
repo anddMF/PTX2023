@@ -1,18 +1,20 @@
-import json
-import os
-from flask import Flask, jsonify, request, _request_ctx_stack
-from flask_cors import cross_origin
-from jose import jwt
-from news.service.news_service import get_news_io
-from news.service.auth_service import requires_auth
-from six.moves.urllib.request import urlopen
-from functools import wraps
 from dotenv import load_dotenv
-
-from news.model.news import News, NewsSchema
-from news.model.auth_error import AuthError
-
 load_dotenv()
+
+from api.model.auth_error import AuthError
+from api.model.news import News, NewsSchema
+from functools import wraps
+from six.moves.urllib.request import urlopen
+from api.service.auth_service import requires_auth
+import api.service.weather_service as weather_svc
+from api.service.news_service import get_news_io
+from api.model.weather_daily import WeatherDailySchema
+from jose import jwt
+from flask_cors import cross_origin
+from flask import Flask, jsonify, request, _request_ctx_stack
+import os
+import json
+
 
 mock_news = [
     {'title': 'Titulo teste', 'content': 'conteudo teste'},
@@ -55,3 +57,14 @@ def add_news():
     objPost = NewsSchema().load(request.get_json())
     mock_news.append(objPost)
     return '', 204
+
+
+@app.route('/weather/daily', methods=['GET'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def get_daily_weather():
+    schema = WeatherDailySchema(many=True)
+    city_key = request.args.get('citykey')
+    raw_response = weather_svc.get_daily(city_key)
+    response = schema.dump(raw_response['DailyForecasts'])
+    return jsonify(response)

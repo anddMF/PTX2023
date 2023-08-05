@@ -9,8 +9,8 @@ class WeatherDaily(object):
         self.link = link
 
 class WeatherDailySchema(Schema):
-    date = fields.Str()
-    temperature = fields.Dict()
-    day = fields.Dict()
-    night = fields.Dict()
-    link = fields.Str()
+    Date = fields.Str()
+    Temperature = fields.Dict()
+    Day = fields.Dict()
+    Night = fields.Dict()
+    Link = fields.Str()

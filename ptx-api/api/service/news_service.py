@@ -1,11 +1,10 @@
 import requests
 import os
 
-NEWS_URL = os.getenv('NEWS_IO_URL')
-NEWS_KEY = os.getenv('NEWS_IO_KEY')
+NEWS_IO_URL = os.getenv('NEWS_IO_URL')
+NEWS_IO_KEY = os.getenv('NEWS_IO_KEY')
 
-url = NEWS_URL + NEWS_KEY
-
+url = NEWS_IO_URL+NEWS_IO_KEY
 
 def get_news_io(countries, categories):
     countries = countries.split(',')

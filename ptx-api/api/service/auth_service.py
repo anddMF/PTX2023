@@ -5,7 +5,7 @@ from jose import jwt
 from six.moves.urllib.request import urlopen
 from functools import wraps
 
-from news.model.auth_error import AuthError
+from api.model.auth_error import AuthError
 
 AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
 AUTH0_AUDIENCE = os.getenv("AUTH0_AUDIENCE")
