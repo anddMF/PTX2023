@@ -65,6 +65,8 @@ def add_news():
 def get_daily_weather():
     schema = WeatherDailySchema(many=True)
     city_key = request.args.get('citykey')
+    if city_key == None or city_key == '':
+        return '', 400
     raw_response = weather_svc.get_daily(city_key)
     response = schema.dump(raw_response['DailyForecasts'])
     return jsonify(response)
