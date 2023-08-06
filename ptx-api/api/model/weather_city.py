@@ -8,7 +8,7 @@ class WeatherCity(object):
         self.administrativeArea = administrativeArea
 
 class WeatherCitySchema(Schema):
-    key = fields.Str()
-    localizedName = fields.Str()
-    country = fields.Dict()
-    administrativeArea = fields.Dict()
+    Key = fields.Str()
+    LocalizedName = fields.Str()
+    Country = fields.Dict()
+    AdministrativeArea = fields.Dict()

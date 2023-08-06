@@ -9,6 +9,7 @@ from api.service.auth_service import requires_auth
 import api.service.weather_service as weather_svc
 from api.service.news_service import get_news_io
 from api.model.weather_daily import WeatherDailySchema
+from api.model.weather_city import WeatherCitySchema
 from jose import jwt
 from flask_cors import cross_origin
 from flask import Flask, jsonify, request, _request_ctx_stack
@@ -69,4 +70,16 @@ def get_daily_weather():
         return '', 400
     raw_response = weather_svc.get_daily(city_key)
     response = schema.dump(raw_response['DailyForecasts'])
+    return jsonify(response)
+
+@app.route('/weather/city', methods=['GET'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def get_city_key():
+    schema = WeatherCitySchema(many=True)
+    query = request.args.get('q')
+    if query == None or query == '':
+        return '', 400
+    raw_response = weather_svc.get_city_key(query)
+    response = schema.dump(raw_response)
     return jsonify(response)
