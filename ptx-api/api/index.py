@@ -8,6 +8,7 @@ from jose import jwt
 from api.model.weather_city import WeatherCitySchema
 from api.model.weather_daily import WeatherDailySchema
 from api.model.weather_hourly import WeatherHourlySchema
+from api.model.weather_current import WeatherCurrentSchema
 from api.service.news_service import get_news_io
 import api.service.weather_service as weather_svc
 from api.service.auth_service import requires_auth
@@ -84,6 +85,19 @@ def get_hourly_weather():
     if city_key == None or city_key == '':
         return '', 400
     raw_response = weather_svc.get_hourly(city_key)
+    response = schema.dump(raw_response)
+    return jsonify(response)
+
+
+@app.route('/weather/current', methods=['GET'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def get_current_weather():
+    schema = WeatherCurrentSchema(many=True)
+    city_key = request.args.get('citykey')
+    if city_key == None or city_key == '':
+        return '', 400
+    raw_response = weather_svc.get_current(city_key)
     response = schema.dump(raw_response)
     return jsonify(response)
 

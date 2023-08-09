@@ -11,10 +11,19 @@ def get_daily(city_key):
     response = requests.get(final_url)
     return response.json()
 
+
 def get_hourly(city_key):
     final_url = ACCU_WEATHER_URL + "forecasts/v1/hourly/12hour/" + city_key + "?apikey=" + ACCU_WEATHER_KEY + metric_suffix
     response = requests.get(final_url)
     return response.json()
+
+
+def get_current(city_key):
+    # http://dataservice.accuweather.com/currentconditions/v1/56186?apikey=AB39HgMPKHFsEDTSreTstQ64nteB3e75
+    final_url = ACCU_WEATHER_URL + "currentconditions/v1/" + city_key + "?apikey=" + ACCU_WEATHER_KEY
+    response = requests.get(final_url)
+    return response.json()
+
 
 def get_city_key(query):
     final_url = ACCU_WEATHER_URL + "locations/v1/cities/autocomplete?apikey=" + ACCU_WEATHER_KEY + "&q=" + query
