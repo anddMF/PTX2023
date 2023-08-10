@@ -11,6 +11,7 @@ from api.model.weather_hourly import WeatherHourlySchema
 from api.model.weather_current import WeatherCurrentSchema
 from api.service.news_service import get_news_io
 import api.service.weather_service as weather_svc
+import api.service.currency_service as currency_svc
 from api.service.auth_service import requires_auth
 from six.moves.urllib.request import urlopen
 from functools import wraps
@@ -112,4 +113,21 @@ def get_city_key():
         return '', 400
     raw_response = weather_svc.get_city_key(query)
     response = schema.dump(raw_response)
+    return jsonify(response)
+
+
+# Currency endpoints
+@app.route('/currency/rate', methods=['GET'])
+@cross_origin(headers=["Content-Type", "Authorization"])
+@requires_auth
+def get_currency_rate():
+    base_currency = request.args.get('from')
+    final_currency = request.args.get('to')
+    date = request.args.get('date')
+    if base_currency == None or base_currency == '' or final_currency == None or final_currency == '':
+        return '', 400
+    
+    # TODO: maybe regex to validate if the date is == latest or in format YYYY-MM-DD
+
+    response = currency_svc.get_currency_rate(base_currency, final_currency, date)
     return jsonify(response)
