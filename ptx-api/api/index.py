@@ -1,28 +1,24 @@
 from dotenv import load_dotenv
 load_dotenv()
-import json
-import os
-from flask import Flask, jsonify, request, _request_ctx_stack
-from flask_cors import cross_origin
-from jose import jwt
-from api.model.weather_city import WeatherCitySchema
-from api.model.weather_daily import WeatherDailySchema
-from api.model.weather_hourly import WeatherHourlySchema
-from api.model.weather_current import WeatherCurrentSchema
-from api.service.news_service import get_news_io
-import api.service.weather_service as weather_svc
-import api.service.currency_service as currency_svc
-from api.service.auth_service import requires_auth
-from six.moves.urllib.request import urlopen
-from functools import wraps
-from api.model.news import News, NewsSchema
 from api.model.auth_error import AuthError
+from api.model.news import News, NewsSchema
+from functools import wraps
+from six.moves.urllib.request import urlopen
+from api.service.auth_service import requires_auth
+import api.utils as utils
+import api.service.currency_service as currency_svc
+import api.service.weather_service as weather_svc
+from api.service.news_service import get_news_io
+from api.model.weather_current import WeatherCurrentSchema
+from api.model.weather_hourly import WeatherHourlySchema
+from api.model.weather_daily import WeatherDailySchema
+from api.model.weather_city import WeatherCitySchema
+from jose import jwt
+from flask_cors import cross_origin
+from flask import Flask, jsonify, request, _request_ctx_stack
 
 
-mock_news = [
-    {'title': 'Titulo teste', 'content': 'conteudo teste'},
-    {'title': '2 Titutlo teste', 'content': '2 conteudo teste'}
-]
+mock_news = []
 
 app = Flask(__name__)
 
@@ -124,10 +120,13 @@ def get_currency_rate():
     base_currency = request.args.get('from')
     final_currency = request.args.get('to')
     date = request.args.get('date')
+
     if base_currency == None or base_currency == '' or final_currency == None or final_currency == '':
         return '', 400
-    
-    # TODO: maybe regex to validate if the date is == latest or in format YYYY-MM-DD
 
-    response = currency_svc.get_currency_rate(base_currency, final_currency, date)
+    if date != 'latest' and not utils.check_date_format(date):
+        return '', 400
+
+    response = currency_svc.get_currency_rate(
+        base_currency, final_currency, date)
     return response.json()
