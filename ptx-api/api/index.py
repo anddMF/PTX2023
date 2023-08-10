@@ -130,4 +130,4 @@ def get_currency_rate():
     # TODO: maybe regex to validate if the date is == latest or in format YYYY-MM-DD
 
     response = currency_svc.get_currency_rate(base_currency, final_currency, date)
-    return jsonify(response)
+    return response.json()
