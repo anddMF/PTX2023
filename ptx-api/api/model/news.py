@@ -4,16 +4,14 @@ from marshmallow import Schema, fields
 
 
 class News(object):
-    def __init__(self, title, content, keywords, creator, video_url, description, pubDate, image_url, source_id, category, country, language):
+    def __init__(self, title, author, url, description, published_at, image, category, country, language, source):
         self.title = title
-        self.content = content
-        self.keywords = keywords
-        self.creator = creator
-        self.video_url = video_url
         self.description = description
-        self.pubDate = pubDate
-        self.image_url = image_url
-        self.source_id = source_id
+        self.url = url
+        self.author = author
+        self.published_at = published_at
+        self.image = image
+        self.source = source
         self.category = category
         self.country = country
         self.language = language
@@ -24,14 +22,12 @@ class News(object):
 
 class NewsSchema(Schema):
     title = fields.Str()
-    content = fields.Str()
-    keywords = fields.List(fields.Str())
-    creator = fields.List(fields.Str())
-    video_url = fields.Str()
     description = fields.Str()
-    pubDate = fields.Str()
-    image_url = fields.Str()
-    source_id = fields.Str()
-    category = fields.List(fields.Str())
-    country = fields.List(fields.Str())
+    url = fields.Str()
+    author = fields.Str()
+    published_at = fields.Str()
+    image = fields.Str()
+    source = fields.Str()
+    category = fields.Str()
+    country = fields.Str()
     language = fields.Str()

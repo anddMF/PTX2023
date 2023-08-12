@@ -1,14 +1,14 @@
 from dotenv import load_dotenv
 load_dotenv()
 from api.model.auth_error import AuthError
-from api.model.news import News, NewsSchema
+from api.model.news import NewsSchema
 from functools import wraps
 from six.moves.urllib.request import urlopen
 from api.service.auth_service import requires_auth
 import api.utils as utils
 import api.service.currency_service as currency_svc
 import api.service.weather_service as weather_svc
-from api.service.news_service import get_news_io
+from api.service.news_service import get_news_mediastack
 from api.model.weather_current import WeatherCurrentSchema
 from api.model.weather_hourly import WeatherHourlySchema
 from api.model.weather_daily import WeatherDailySchema
@@ -43,11 +43,16 @@ def ping():
 @requires_auth
 def get_news():
     schema = NewsSchema(many=True)
-    categories = request.args.get('categories')
+
     countries = request.args.get('countries')
-    res = get_news_io(countries, categories)
-    news = schema.dump(res['results'])
-    return jsonify(news)
+    categories = request.args.get('categories')
+    sources = request.args.get('sources')
+    sort = request.args.get('sort')
+    keywords = request.args.get('keywords')
+    raw_response = get_news_mediastack(countries, categories, sources, sort, keywords)
+
+    response = schema.dump(raw_response['data'])
+    return jsonify(response)
 
 
 @app.route('/news', methods=['POST'])
