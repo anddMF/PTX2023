@@ -6,19 +6,19 @@ NEWS_URL = os.getenv('MEDIASTACK_NEWS_URL') + os.getenv('MEDIASTACK_NEWS_KEY')
 
 
 def get_news_mediastack(countries, categories, sources, sort, keywords):
-    countries = countries.split(',')
-    categories = categories.split(',')
-    sources = sources.split(',')
     final_url = NEWS_URL
 
-    if countries:
-        final_url = add_route_param(countries, 'countries', final_url)
+    excluded_sources = '-baystreet,-adital,-cinepop,-dgabc,-tutube,-r7,-alagoas24horas,-tnonline'
 
-    if categories:
-        final_url = add_route_param(categories, 'categories', final_url)
+    if countries != '':
+        final_url += '&countries=' + countries
 
-    if sources:
-        final_url = add_route_param(sources, 'sources', final_url)
+    if categories != '':
+        final_url += '&categories=' + categories
+    
+    final_url += f'&sources={excluded_sources}'
+    if sources != '':
+        final_url += ',' + sources
 
     if sort != '':
         final_url += f'&sort={sort}'

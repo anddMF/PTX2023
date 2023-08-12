@@ -44,13 +44,13 @@ def ping():
 def get_news():
     schema = NewsSchema(many=True)
 
-    countries = request.args.get('countries')
-    categories = request.args.get('categories')
-    sources = request.args.get('sources')
-    sort = request.args.get('sort')
-    keywords = request.args.get('keywords')
-    raw_response = get_news_mediastack(countries, categories, sources, sort, keywords)
+    countries = request.args.get('countries') if request.args.get('countries') != None else ''
+    categories = request.args.get('categories') if request.args.get('categories') != None else ''
+    sources = request.args.get('sources') if request.args.get('sources') != None else '' 
+    sort = request.args.get('sort') if request.args.get('sort') != None else ''
+    keywords = request.args.get('keywords') if request.args.get('keywords') != None else ''
 
+    raw_response = get_news_mediastack(countries, categories, sources, sort, keywords)
     response = schema.dump(raw_response['data'])
     return jsonify(response)
 
@@ -70,9 +70,11 @@ def add_news():
 @requires_auth
 def get_daily_weather():
     schema = WeatherDailySchema(many=True)
+
     city_key = request.args.get('citykey')
     if city_key == None or city_key == '':
         return '', 400
+    
     raw_response = weather_svc.get_daily(city_key)
     response = schema.dump(raw_response['DailyForecasts'])
     return jsonify(response)
@@ -83,9 +85,11 @@ def get_daily_weather():
 @requires_auth
 def get_hourly_weather():
     schema = WeatherHourlySchema(many=True)
+
     city_key = request.args.get('citykey')
     if city_key == None or city_key == '':
         return '', 400
+    
     raw_response = weather_svc.get_hourly(city_key)
     response = schema.dump(raw_response)
     return jsonify(response)
@@ -96,9 +100,11 @@ def get_hourly_weather():
 @requires_auth
 def get_current_weather():
     schema = WeatherCurrentSchema(many=True)
+
     city_key = request.args.get('citykey')
     if city_key == None or city_key == '':
         return '', 400
+    
     raw_response = weather_svc.get_current(city_key)
     response = schema.dump(raw_response)
     return jsonify(response)
@@ -109,9 +115,11 @@ def get_current_weather():
 @requires_auth
 def get_city_key():
     schema = WeatherCitySchema(many=True)
+
     query = request.args.get('q')
     if query == None or query == '':
         return '', 400
+    
     raw_response = weather_svc.get_city_key(query)
     response = schema.dump(raw_response)
     return jsonify(response)
