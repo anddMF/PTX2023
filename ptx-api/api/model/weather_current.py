@@ -15,8 +15,8 @@ class WeatherCurrent(object):
 class WeatherCurrentSchema(Schema):
     DateTime = fields.Str()
     WeatherText = fields.Str()
-    WeatherIcon = fields.Str()
-    HasPrecipitation = fields.Str()
+    WeatherIcon = fields.Int()
+    HasPrecipitation = fields.Bool()
     PrecipitationType = fields.Str()
     PrecipitationIntensity = fields.Str()
     IsDayTime = fields.Str()

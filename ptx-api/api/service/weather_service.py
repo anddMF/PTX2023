@@ -30,6 +30,8 @@ def get_current(city_key):
     converted_json = json.loads(response.text)
     converted_json[0]['Temperature'] = converted_json[0]['Temperature']['Metric']['Value']
     converted_json[0]['DateTime'] = converted_json[0].pop('LocalObservationDateTime')
+    converted_json[0]['WeatherIcon'] = int(converted_json[0]['WeatherIcon'])
+    converted_json[0]['HasPrecipitation'] = converted_json[0]['HasPrecipitation'] == 'True'
     return converted_json[0]
 
 
