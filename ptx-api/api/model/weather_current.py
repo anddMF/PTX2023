@@ -20,5 +20,5 @@ class WeatherCurrentSchema(Schema):
     PrecipitationType = fields.Str()
     PrecipitationIntensity = fields.Str()
     IsDayTime = fields.Str()
-    Temperature = fields.Dict()
+    Temperature = fields.Number()
     Link = fields.Str()

@@ -1,5 +1,6 @@
 import requests
 import os
+import json
 
 ACCU_WEATHER_URL = os.getenv('ACCU_WEATHER_URL')
 ACCU_WEATHER_KEY = os.getenv('ACCU_WEATHER_KEY')
@@ -21,7 +22,9 @@ def get_hourly(city_key):
 def get_current(city_key):
     final_url = ACCU_WEATHER_URL + "currentconditions/v1/" + city_key + "?apikey=" + ACCU_WEATHER_KEY
     response = requests.get(final_url)
-    return response.json()
+    converted_json = json.loads(response.text)
+    converted_json[0]['Temperature'] = converted_json[0]['Temperature']['Metric']['Value']
+    return converted_json[0]
 
 
 def get_city_key(query):

@@ -100,7 +100,7 @@ def get_hourly_weather():
 @cross_origin(headers=["Content-Type", "Authorization"])
 # @requires_auth
 def get_current_weather():
-    schema = WeatherCurrentSchema(many=True)
+    schema = WeatherCurrentSchema()
 
     city_key = request.args.get('citykey')
     if city_key == None or city_key == '':
