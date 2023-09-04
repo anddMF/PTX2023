@@ -68,7 +68,7 @@ def add_news():
 # Weather endpoints
 @app.route('/weather/daily', methods=['GET'])
 @cross_origin(headers=["Content-Type", "Authorization"])
-@requires_auth
+# @requires_auth
 def get_daily_weather():
     schema = WeatherDailySchema(many=True)
 
@@ -83,7 +83,7 @@ def get_daily_weather():
 
 @app.route('/weather/hourly', methods=['GET'])
 @cross_origin(headers=["Content-Type", "Authorization"])
-@requires_auth
+# @requires_auth
 def get_hourly_weather():
     schema = WeatherHourlySchema(many=True)
 
@@ -98,7 +98,7 @@ def get_hourly_weather():
 
 @app.route('/weather/current', methods=['GET'])
 @cross_origin(headers=["Content-Type", "Authorization"])
-@requires_auth
+# @requires_auth
 def get_current_weather():
     schema = WeatherCurrentSchema(many=True)
 
@@ -113,7 +113,7 @@ def get_current_weather():
 
 @app.route('/weather/city', methods=['GET'])
 @cross_origin(headers=["Content-Type", "Authorization"])
-@requires_auth
+# @requires_auth
 def get_city_key():
     schema = WeatherCitySchema(many=True)
 
