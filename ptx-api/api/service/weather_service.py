@@ -19,6 +19,7 @@ def get_hourly(city_key):
     converted_json = json.loads(response.text)
     for obj in converted_json:
         obj['Temperature'] = obj['Temperature']['Value']
+        obj['WeatherText'] = obj.pop('IconPhrase')
     
     return converted_json
 
@@ -28,6 +29,7 @@ def get_current(city_key):
     response = requests.get(final_url)
     converted_json = json.loads(response.text)
     converted_json[0]['Temperature'] = converted_json[0]['Temperature']['Metric']['Value']
+    converted_json[0]['DateTime'] = converted_json[0].pop('LocalObservationDateTime')
     return converted_json[0]
 
 

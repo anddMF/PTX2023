@@ -15,7 +15,7 @@ class WeatherHourly(object):
 class WeatherHourlySchema(Schema):
     DateTime = fields.Str()
     WeatherIcon = fields.Int()
-    IconPhrase = fields.Str()
+    WeatherText = fields.Str()
     PrecipitationProbability = fields.Number()
     IsDaylight = fields.Boolean()
     Temperature = fields.Number()

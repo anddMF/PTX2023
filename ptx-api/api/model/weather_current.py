@@ -13,7 +13,7 @@ class WeatherCurrent(object):
         self.link = link
 
 class WeatherCurrentSchema(Schema):
-    LocalObservationDateTime = fields.Str()
+    DateTime = fields.Str()
     WeatherText = fields.Str()
     WeatherIcon = fields.Str()
     HasPrecipitation = fields.Str()
