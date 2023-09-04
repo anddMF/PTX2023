@@ -129,7 +129,7 @@ def get_city_key():
 # Currency endpoints
 @app.route('/currency/rate', methods=['GET'])
 @cross_origin(headers=["Content-Type", "Authorization"])
-@requires_auth
+# @requires_auth
 def get_currency_rate():
     base_currency = request.args.get('from')
     final_currency = request.args.get('to')
