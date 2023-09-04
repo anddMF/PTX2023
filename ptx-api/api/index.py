@@ -16,6 +16,7 @@ from api.model.weather_city import WeatherCitySchema
 from jose import jwt
 from flask_cors import cross_origin
 from flask import Flask, jsonify, request, _request_ctx_stack
+import json
 
 
 mock_news = []
@@ -142,4 +143,5 @@ def get_currency_rate():
 
     response = currency_svc.get_currency_rate(
         base_currency, final_currency, date)
-    return response.json()
+
+    return json.dumps(response.__dict__)

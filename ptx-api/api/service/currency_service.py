@@ -2,6 +2,8 @@
 
 import os
 import requests
+import json
+from api.model.currency import Currency
 
 
 CURRENCY_URL_1 = os.getenv('CURRENCY_URL_1')
@@ -13,4 +15,6 @@ def get_currency_rate(base, expected, date):
 
     final_url = CURRENCY_URL_1 + date + '/currencies/' + rate_url_addon
     response = requests.get(final_url)
-    return response
+    converted_json = json.loads(response.text)
+    currency_rate = Currency(converted_json[expected.lower()], converted_json['date'])
+    return currency_rate
