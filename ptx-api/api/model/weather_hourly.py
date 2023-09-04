@@ -18,7 +18,7 @@ class WeatherHourlySchema(Schema):
     IconPhrase = fields.Str()
     PrecipitationProbability = fields.Number()
     IsDaylight = fields.Boolean()
-    Temperature = fields.Dict()
+    Temperature = fields.Number()
     PrecipitationType = fields.Str()
     PrecipitationIntensity = fields.Str()
     Link = fields.Str()

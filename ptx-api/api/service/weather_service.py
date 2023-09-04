@@ -16,7 +16,11 @@ def get_daily(city_key):
 def get_hourly(city_key):
     final_url = ACCU_WEATHER_URL + "forecasts/v1/hourly/12hour/" + city_key + "?apikey=" + ACCU_WEATHER_KEY + metric_suffix
     response = requests.get(final_url)
-    return response.json()
+    converted_json = json.loads(response.text)
+    for obj in converted_json:
+        obj['Temperature'] = obj['Temperature']['Value']
+    
+    return converted_json
 
 
 def get_current(city_key):
