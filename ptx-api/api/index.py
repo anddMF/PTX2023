@@ -41,7 +41,7 @@ def ping():
 # News endpoints
 @app.route('/news')
 @cross_origin(headers=["Content-Type", "Authorization"])
-@requires_auth
+# @requires_auth
 def get_news():
     schema = NewsSchema(many=True)
 
