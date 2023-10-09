@@ -16,13 +16,14 @@ from api.model.weather_city import WeatherCitySchema
 from jose import jwt
 from flask_cors import cross_origin
 from flask import Flask, jsonify, request, _request_ctx_stack
+from flask_selfdoc import Autodoc
 import json
 
 
 mock_news = []
 
 app = Flask(__name__)
-
+auto = Autodoc(app)
 
 @app.errorhandler(AuthError)
 def handle_auth_error(ex):
@@ -32,6 +33,7 @@ def handle_auth_error(ex):
 
 
 @app.route('/ping')
+@auto.doc()
 @cross_origin(headers=["Content-Type", "Authorization"])
 def ping():
     response = 'Ok'
@@ -40,9 +42,11 @@ def ping():
 
 # News endpoints
 @app.route('/news')
+@auto.doc()
 @cross_origin(headers=["Content-Type", "Authorization"])
 # @requires_auth
 def get_news():
+    """Return all news based on args from route."""
     schema = NewsSchema(many=True)
 
     countries = request.args.get('countries') if request.args.get('countries') != None else ''
@@ -67,6 +71,7 @@ def add_news():
 
 # Weather endpoints
 @app.route('/weather/daily', methods=['GET'])
+@auto.doc()
 @cross_origin(headers=["Content-Type", "Authorization"])
 # @requires_auth
 def get_daily_weather():
@@ -82,6 +87,7 @@ def get_daily_weather():
 
 
 @app.route('/weather/hourly', methods=['GET'])
+@auto.doc()
 @cross_origin(headers=["Content-Type", "Authorization"])
 # @requires_auth
 def get_hourly_weather():
@@ -97,6 +103,7 @@ def get_hourly_weather():
 
 
 @app.route('/weather/current', methods=['GET'])
+@auto.doc()
 @cross_origin(headers=["Content-Type", "Authorization"])
 # @requires_auth
 def get_current_weather():
@@ -112,6 +119,7 @@ def get_current_weather():
 
 
 @app.route('/weather/city', methods=['GET'])
+@auto.doc()
 @cross_origin(headers=["Content-Type", "Authorization"])
 # @requires_auth
 def get_city_key():
@@ -128,6 +136,7 @@ def get_city_key():
 
 # Currency endpoints
 @app.route('/currency/rate', methods=['GET'])
+@auto.doc()
 @cross_origin(headers=["Content-Type", "Authorization"])
 # @requires_auth
 def get_currency_rate():
@@ -145,3 +154,9 @@ def get_currency_rate():
         base_currency, final_currency, date)
 
     return json.dumps(response.__dict__)
+
+
+# Documentation
+@app.route('/documentation')
+def documentation():
+    return auto.html(title='PTX Api')
