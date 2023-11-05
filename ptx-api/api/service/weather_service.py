@@ -4,6 +4,7 @@ import json
 
 ACCU_WEATHER_URL = os.getenv('ACCU_WEATHER_URL')
 ACCU_WEATHER_KEY = os.getenv('ACCU_WEATHER_KEY')
+UNSPLASH_URL = os.getenv('UNSPLASH_URL')
 
 metric_suffix = "&metric=true"
 
@@ -38,5 +39,11 @@ def get_current(city_key):
 
 def get_city_key(query):
     final_url = ACCU_WEATHER_URL + "locations/v1/cities/autocomplete?apikey=" + ACCU_WEATHER_KEY + "&q=" + query
+    response = requests.get(final_url)
+    return response.json()
+
+
+def get_city_wallpaper(city_name):
+    final_url = UNSPLASH_URL + "query=" + city_name + "&count=1&orientation=landscape"
     response = requests.get(final_url)
     return response.json()

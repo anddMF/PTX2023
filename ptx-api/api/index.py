@@ -134,6 +134,19 @@ def get_city_key():
     return jsonify(response)
 
 
+@app.route('/weather/wallpaper', methods=['GET'])
+@auto.doc()
+@cross_origin(headers=["Content-Type", "Authorization"])
+# @requires_auth
+def get_wallpaper():
+    query = request.args.get('name')
+    if query == None or query == '':
+        return '', 400
+    
+    raw_response = weather_svc.get_city_wallpaper(query)
+    return jsonify(raw_response)
+
+
 # Currency endpoints
 @app.route('/currency/rate', methods=['GET'])
 @auto.doc()
