@@ -9,6 +9,7 @@ import api.utils as utils
 import api.service.currency_service as currency_svc
 import api.service.weather_service as weather_svc
 from api.service.news_service import get_news_mediastack
+from api.service.gpt_service import get_messages
 from api.model.weather_current import WeatherCurrentSchema
 from api.model.weather_hourly import WeatherHourlySchema
 from api.model.weather_daily import WeatherDailySchema
@@ -18,12 +19,14 @@ from flask_cors import cross_origin
 from flask import Flask, jsonify, request, _request_ctx_stack
 from flask_selfdoc import Autodoc
 import json
+import asyncio
 
 
 mock_news = []
 
 app = Flask(__name__)
 auto = Autodoc(app)
+
 
 @app.errorhandler(AuthError)
 def handle_auth_error(ex):
@@ -49,9 +52,12 @@ def get_news():
     """Return all news based on args from route."""
     schema = NewsSchema(many=True)
 
-    countries = request.args.get('countries') if request.args.get('countries') != None else ''
-    categories = request.args.get('categories') if request.args.get('categories') != None else ''
-    sources = request.args.get('sources') if request.args.get('sources') != None else '' 
+    countries = request.args.get('countries') if request.args.get(
+        'countries') != None else ''
+    categories = request.args.get('categories') if request.args.get(
+        'categories') != None else ''
+    sources = request.args.get('sources') if request.args.get(
+        'sources') != None else ''
     sort = request.args.get('sort') if request.args.get('sort') != None else ''
     keywords = request.args.get('keywords') if request.args.get('keywords') != None else ''
 
@@ -80,7 +86,7 @@ def get_daily_weather():
     city_key = request.args.get('citykey')
     if city_key == None or city_key == '':
         return '', 400
-    
+
     raw_response = weather_svc.get_daily(city_key)
     response = schema.dump(raw_response['DailyForecasts'])
     return jsonify(response)
@@ -96,7 +102,7 @@ def get_hourly_weather():
     city_key = request.args.get('citykey')
     if city_key == None or city_key == '':
         return '', 400
-    
+
     raw_response = weather_svc.get_hourly(city_key)
     response = schema.dump(raw_response)
     return jsonify(response)
@@ -112,7 +118,7 @@ def get_current_weather():
     city_key = request.args.get('citykey')
     if city_key == None or city_key == '':
         return '', 400
-    
+
     raw_response = weather_svc.get_current(city_key)
     response = schema.dump(raw_response)
     return jsonify(response)
@@ -128,7 +134,7 @@ def get_city_key():
     query = request.args.get('q')
     if query == None or query == '':
         return '', 400
-    
+
     raw_response = weather_svc.get_city_key(query)
     response = schema.dump(raw_response)
     return jsonify(response)
@@ -142,7 +148,7 @@ def get_wallpaper():
     query = request.args.get('name')
     if query == None or query == '':
         return '', 400
-    
+
     raw_response = weather_svc.get_city_wallpaper(query)
     return jsonify(raw_response)
 
@@ -167,6 +173,16 @@ def get_currency_rate():
         base_currency, final_currency, date)
 
     return json.dumps(response.__dict__)
+
+# GPT endpoints
+@app.route('/gpt', methods=['GET'])
+@auto.doc()
+@cross_origin(headers=["Content-Type", "Authorization"])
+# @requires_auth
+def get_gpt():
+    message = request.args.get('message')
+    messages = asyncio.run(get_messages(message))
+    return jsonify(messages)
 
 
 # Documentation
