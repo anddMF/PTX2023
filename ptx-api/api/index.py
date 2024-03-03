@@ -182,7 +182,9 @@ def get_currency_rate():
 def get_gpt():
     message = request.args.get('message')
     messages = asyncio.run(get_messages(message))
-    return jsonify(messages[-2:])
+    response = [current.get('adaptiveCards', None) for current in messages]
+    return jsonify(response)
+    # return jsonify(messages[-2]['adaptiveCards'])
 
 
 # Documentation
