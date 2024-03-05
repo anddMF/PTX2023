@@ -1,3 +1,5 @@
+# endpoint from https://www.accuweather.com
+
 import requests
 import os
 import json
@@ -7,6 +9,7 @@ ACCU_WEATHER_KEY = os.getenv('ACCU_WEATHER_KEY')
 UNSPLASH_URL = os.getenv('UNSPLASH_URL')
 
 metric_suffix = "&metric=true"
+
 
 def get_daily(city_key):
     final_url = ACCU_WEATHER_URL + "forecasts/v1/daily/5day/" + city_key + "?apikey=" + ACCU_WEATHER_KEY + metric_suffix
@@ -21,7 +24,7 @@ def get_hourly(city_key):
     for obj in converted_json:
         obj['Temperature'] = obj['Temperature']['Value']
         obj['WeatherText'] = obj.pop('IconPhrase')
-    
+
     return converted_json
 
 
