@@ -183,7 +183,7 @@ def get_gpt():
     message = request.args.get('message')
     messages = asyncio.run(get_messages(message))
     # response = [current.get('adaptiveCards', None) for current in messages]
-    correct_response = [obj['adaptiveCards'][0]['body'][0]['text'][4:] for obj in messages if 'adaptiveCards' in obj and obj['adaptiveCards'][0].get('body', [{}])[0].get('text', '').startswith('[1]')]
+    correct_response = [obj['adaptiveCards'][0]['body'][0]['text'] for obj in messages if 'adaptiveCards' in obj and obj['adaptiveCards'][0].get('body', [{}])[0].get('text', '').startswith('[1]')]
     return jsonify(correct_response)
 
 
